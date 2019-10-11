@@ -27,7 +27,7 @@ hawaii_relief <- raster_data %>%
         as.data.frame() %>%
         dplyr::rename(., value = prefix) %>%
         dplyr::filter(value != 255)
-hawaii_relief$y = hawaii_relief$y - 1104000
+hawaii_relief$y = hawaii_relief$y - 1104600
 data.table::fwrite(hawaii_relief,
                    paste0(here::here("data/relief"), "/", depth, "/", prefix, ".csv"))
 }
