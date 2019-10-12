@@ -17,7 +17,7 @@ theme_roads <- function(...) {
                         legend.text = element_text(family = "Hanalei Fill", colour="#A77B56", size=12),
                         legend.title = element_text(family = "Hanalei Fill", colour="#A77B56"),
                         legend.position="bottom",
-                        plot.title = element_text(family = "Hanalei", color = "#5e644f", size = 40, hjust = 0.49, vjust = -2),
+                        plot.title = element_text(family = "Hanalei", color = "#5e644f", size = 30, hjust = 0.49, vjust = -2),
                         ...
                 )
 }
