@@ -40,9 +40,7 @@ subset_raster(filename = "hawaii_100m.tif", depth = "100m")
 subset_raster(filename = "hawaii_200m.tif", depth = "200m")
 # island of maui
 subset_raster(filename = "maui_100m.tif", depth = "100m")
-#subset_raster(filename = "mauai_extended_200m.tif", depth = "200m")
 subset_raster(filename = "maui_200m.tif", depth = "200m")
-#subset_raster(filename = "mauai_extended_200m.tif", depth = "200m")
 # island of oahu
 subset_raster(filename = "oahu_100m.tif", depth = "100m")
 subset_raster(filename = "oahu_200m.tif", depth = "200m")
@@ -69,15 +67,15 @@ hawaii_relief$y = hawaii_relief$y - 1104600
 
 coast_data <- read_sf(here::here("data/shapefiles/coastline", "Coastline.shp"))
 # The raster and vector datasets should have the same projection but they do not:
-raster_projection = projection(raster_data)
-vector_projection = st_crs(coast_data)$proj4string
+raster_projection = raster::projection(raster_data)
+vector_projection = sf::st_crs(coast_data)$proj4string
 
 shapefiles <- list.files(pattern = "\\.shp$", recursive = TRUE)
 for(i in 1:length(shapefiles)){
   data <- read_sf(shapefiles[i])
   file_name <- sub('.*\\/', '', shapefiles[i])
   geo <- data %>%
-    st_transform(raster_projection)
+    sf::st_transform(raster_projection)
   sf::write_sf(geo, paste0(here::here("data/shapefiles/corrected_projections"), "/", file_name))
 }
 ```
