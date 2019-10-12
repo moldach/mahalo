@@ -1,0 +1,293 @@
+---
+title: "Static Intro"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=FALSE,
+	             cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               widgetframe_widgetsdir = 'widgets')
+opts_knit$set(width=75)
+```
+
+## Making Road Network Maps
+
+Add custom themes and functions
+
+```{r}
+library(sf)
+library(raster)
+library(dplyr)
+library(ggplot2)
+library(showtext)
+library(ggimage)
+
+font_add_google("Hanalei", "Hanalei")
+font_add_google("Hanalei Fill", "Hanalei Fill")
+# automatically use showtext to render text
+showtext_auto()
+# source theme for roads
+source(here::here("R/themes", "ocean_theme.R"))
+```
+
+https://gis.stackexchange.com/questions/144535/creating-transparent-hillshade
+
+```{r}
+# load the rest of the shapefiles
+coast_data <- read_sf(here::here("data/shapefiles/coastline/Coastline.shp"))
+
+# Load the 200m raster data
+raster_data <- raster(here::here("data/relief/100m/srgyhii200a.tif"))
+
+hawaii_relief <- raster_data %>%
+  as("SpatialPixelsDataFrame") %>%
+  as.data.frame() %>%
+  rename(., value = "srgyhii200a") %>%
+  filter(value != 255)
+
+#### YOU NEED TO CORRECT GGIMAGE LOCATIONS... BIG PAIN IN THE BUTT
+# # Load the 200m raster data
+# raster_data <- raster(here::here("data/relief/200m/srgyhii200a.tif"))
+# 
+# hawaii_relief <- raster_data %>%
+#   as("SpatialPixelsDataFrame") %>%
+#   as.data.frame() %>%
+#   rename(., value = "srgyhii200a") %>%
+#   filter(value != 255)
+
+coast_geo <- coast_data %>%
+  st_transform(raster_projection)
+```
+
+# tiki mask
+https://www.freepik.com/free-vector/ethnic-set-fun-tiki-masks_1230545.htm
+
+# hibiscus
+https://www.freepik.com/free-vector/hand-drawn-tropical-flowers-leaves_4361689.htm#page=9&query=hawaii&position=2 
+
+# guitar
+https://www.freepik.com/free-vector/colorful-ukulele-collection_838272.htm#page=15&query=hawaii&position=1 
+
+# palms
+https://www.freepik.com/free-vector/coconut-palms-queen-palmae-with-leaves_4102398.htm#page=12&query=hawaii&position=31
+
+# boats
+https://www.freepik.com/free-vector/assortment-flat-boats-with-red-details_1104707.htm#page=1&query=sailboat&position=23
+
+# shark
+https://www.freepik.com/free-vector/illustration-drawing-style-marine-life-collection_2945135.htm
+
+```{r, welcome-to-hawaii}
+# make plot
+#x11() # open graphics device on Windows
+
+vector_images <- read.csv(here::here("data/svg_icons/vector-images.csv"), stringsAsFactors = F)
+
+# for some reason I cannot use a variable in the size aesthethetic for geom_image so I'm going to subset images based on size and will use a geom_image() call for each size as a workaround
+fifteen <- vector_images %>% filter(image_size == 0.15)
+ninety <- vector_images %>% filter(image_size == 0.9)
+twenty <- vector_images %>% filter(image_size == 0.2)
+twentyfive <- vector_images %>% filter(image_size == 0.25)
+thirtyfive <- vector_images %>% filter(image_size == 0.35)
+eight <- vector_images %>% filter(image_size == 0.08)
+five <- vector_images %>% filter(image_size == 0.05)
+four <- vector_images %>% filter(image_size == 0.04)
+
+vanilla_ocean <- ggplot(data = coast_geo) +
+  geom_raster(
+    data = hawaii_relief,
+    inherit.aes = FALSE,
+    aes(
+      x = x,
+      y = y,
+      alpha = value
+    )
+  ) +
+  # use the "alpha hack" (as the "fill" aesthetic is already taken)
+  scale_alpha(
+    name = "",
+    range = c(0.4, 0.01),
+    guide = FALSE
+  ) + # suppress legend
+  geom_sf(
+    data = coast_geo,
+    fill = "#228b22",
+    color = "transparent",
+    alpha = 0.2
+  ) +
+  labs(title = "Welcome to Hawaii \n Aloha State")
+# save
+saveRDS(vanilla_ocean, here::here("figures", "vanilla_ocean_100m_basemap.rds"))
+
+illustrated_ocean <- vanilla_ocean + 
+  geom_image(
+  data = fifteen,
+    aes(image = image, x = x, y = y),
+    size = 0.15
+  ) +
+  geom_image(
+    data = five,
+    aes(image = image, x = x, y = y),
+    size = 0.05
+  ) +
+  geom_image(
+    data = ninety,
+    aes(image = image, x = x, y = y),
+    size = 0.9
+  ) +
+  geom_image(
+    data = twenty,
+    aes(image = image, x = x, y = y),
+    size = 0.20
+  ) +
+  geom_image(
+    data = twentyfive,
+    aes(image = image, x = x, y = y),
+    size = 0.25
+  ) +
+  geom_image(
+    data = thirtyfive,
+    aes(image = image, x = x, y = y),
+    size = 0.35
+  ) +
+  geom_image(
+    data = eight,
+    aes(image = image, x = x, y = y),
+    size = 0.08
+  ) +
+  geom_image(
+    data = four,
+    aes(image = image, x = x, y = y),
+    size = 0.04
+  ) +
+  theme_ocean()
+
+# save
+saveRDS(basemap, here::here("figures", "illustrated_ocean_100m_basemap.rds"))
+```
+
+# Make a print quality png
+
+```{r}
+file <- here::here("figures/illustrated_map_intro.png")
+ragg::agg_png(
+  file, 
+              background = "transparent", 
+              res = 600, 
+              bitsize = 16, 
+              width = 210, 
+              height = 297, 
+              units = "mm"
+              )
+
+# plot
+ggplot(data = coast_geo) +
+  geom_raster(
+    data = hawaii_relief,
+    inherit.aes = FALSE,
+    aes(
+      x = x,
+      y = y,
+      alpha = value
+    )
+  ) +
+  # use the "alpha hack" (as the "fill" aesthetic is already taken)
+  scale_alpha(
+    name = "",
+    range = c(0.4, 0.01),
+    guide = FALSE
+  ) + # suppress legend
+  geom_sf(
+    data = coast_geo,
+    fill = "#228b22",
+    color = "transparent",
+    alpha = 0.2
+  ) +
+  labs(title = "Welcome to Hawaii - Aloha State") +
+  geom_image(
+    data = fifteen,
+    aes(image = image, x = x, y = y),
+    size = 0.15
+  ) +
+  geom_image(
+    data = five,
+    aes(image = image, x = x, y = y),
+    size = 0.05
+  ) +
+  geom_image(
+    data = ninety,
+    aes(image = image, x = x, y = y),
+    size = 0.9
+  ) +
+  geom_image(
+    data = twenty,
+    aes(image = image, x = x, y = y),
+    size = 0.20
+  ) +
+  geom_image(
+    data = twentyfive,
+    aes(image = image, x = x, y = y),
+    size = 0.25
+  ) +
+  geom_image(
+    data = thirtyfive,
+    aes(image = image, x = x, y = y),
+    size = 0.35
+  ) +
+  geom_image(
+    data = eight,
+    aes(image = image, x = x, y = y),
+    size = 0.08
+  ) +
+  geom_image(
+    data = four,
+    aes(image = image, x = x, y = y),
+    size = 0.04
+  ) +
+  theme_ocean_lrg()
+dev.off() # turn off graphics device
+
+# vanilla ocean basemap
+file <- here::here("figures/vanilla_ocean_basemap.png")
+ragg::agg_png(file,
+              background = "transparent",
+              res = 600,
+              bitsize = 16,
+              width = 210,
+              height = 297,
+              units = "mm")
+# plot
+ggplot(data = coast_geo) +
+  geom_raster(
+    data = hawaii_relief,
+    inherit.aes = FALSE,
+    aes(
+      x = x,
+      y = y,
+      alpha = value
+    )
+  ) +
+  # use the "alpha hack" (as the "fill" aesthetic is already taken)
+  scale_alpha(
+    name = "",
+    range = c(0.4, 0.01),
+    guide = FALSE
+  ) + # suppress legend
+  geom_sf(
+    data = coast_geo,
+    fill = "#228b22",
+    color = "transparent",
+    alpha = 0.2
+  ) +
+  labs(title = "Welcome to Hawaii - Aloha State") +
+  theme_ocean_lrg()
+dev.off() # turn off graphics device
+```
