@@ -6,16 +6,18 @@ output: html_document
 
 ```{r knitr_init, echo=FALSE, cache=FALSE}
 ## Global options
-options(max.print="75")
-opts_chunk$set(echo=FALSE,
-	             cache=TRUE,
-               prompt=FALSE,
-               tidy=TRUE,
-               comment=NA,
-               message=FALSE,
-               warning=FALSE,
-               widgetframe_widgetsdir = 'widgets')
-opts_knit$set(width=75)
+options(max.print = "75")
+opts_chunk$set(
+  echo = FALSE,
+  cache = TRUE,
+  prompt = FALSE,
+  tidy = TRUE,
+  comment = NA,
+  message = FALSE,
+  warning = FALSE,
+  widgetframe_widgetsdir = "widgets"
+)
+opts_knit$set(width = 75)
 ```
 
 ## Making Road Network Maps
@@ -56,7 +58,7 @@ hawaii_relief <- raster_data %>%
 #### YOU NEED TO CORRECT GGIMAGE LOCATIONS... BIG PAIN IN THE BUTT
 # # Load the 200m raster data
 # raster_data <- raster(here::here("data/relief/200m/srgyhii200a.tif"))
-# 
+#
 # hawaii_relief <- raster_data %>%
 #   as("SpatialPixelsDataFrame") %>%
 #   as.data.frame() %>%
@@ -87,7 +89,7 @@ https://www.freepik.com/free-vector/illustration-drawing-style-marine-life-colle
 
 ```{r, welcome-to-hawaii}
 # make plot
-#x11() # open graphics device on Windows
+# x11() # open graphics device on Windows
 
 vector_images <- read.csv(here::here("data/svg_icons/vector-images.csv"), stringsAsFactors = F)
 
@@ -127,9 +129,9 @@ vanilla_ocean <- ggplot(data = coast_geo) +
 # save
 saveRDS(vanilla_ocean, here::here("figures", "vanilla_ocean_100m_basemap.rds"))
 
-illustrated_ocean <- vanilla_ocean + 
+illustrated_ocean <- vanilla_ocean +
   geom_image(
-  data = fifteen,
+    data = fifteen,
     aes(image = image, x = x, y = y),
     size = 0.15
   ) +
@@ -179,14 +181,14 @@ saveRDS(basemap, here::here("figures", "illustrated_ocean_100m_basemap.rds"))
 ```{r}
 file <- here::here("figures/illustrated_map_intro.png")
 ragg::agg_png(
-  file, 
-              background = "transparent", 
-              res = 600, 
-              bitsize = 16, 
-              width = 210, 
-              height = 297, 
-              units = "mm"
-              )
+  file,
+  background = "transparent",
+  res = 600,
+  bitsize = 16,
+  width = 210,
+  height = 297,
+  units = "mm"
+)
 
 # plot
 ggplot(data = coast_geo) +
@@ -258,12 +260,13 @@ dev.off() # turn off graphics device
 # vanilla ocean basemap
 file <- here::here("figures/vanilla_ocean_basemap.png")
 ragg::agg_png(file,
-              background = "transparent",
-              res = 600,
-              bitsize = 16,
-              width = 210,
-              height = 297,
-              units = "mm")
+  background = "transparent",
+  res = 600,
+  bitsize = 16,
+  width = 210,
+  height = 297,
+  units = "mm"
+)
 # plot
 ggplot(data = coast_geo) +
   geom_raster(
