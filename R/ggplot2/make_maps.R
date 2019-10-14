@@ -33,9 +33,9 @@ make_maps <- function(island_name){
         solrad_geo$solar_cal <- as.factor(solrad_geo$solar_cal)
         levels(solrad_geo$solar_cal) <- solrad_vec
         
-        # major land cover
-        agriculture_df <- df %>% dplyr::filter(geo == "Maj_LC")
-        agriculture_geo <- sf::read_sf(here::here("data/shapefiles/biological/carbon", "cah_land_cover_poly.shp"))
+        # land cover
+        agriculture_df <- df %>% dplyr::filter(geo == "agriculture_geo")
+        agriculture_geo <- sf::read_sf(here::here("data/shapefiles/corrected_projections", agriculture_df$shapefile_name))
         agriculture_geo$Maj_LC <- as.factor(agriculture_geo$Maj_LC)
         levels(agriculture_geo$Maj_LC) <- agriculture_vec
         
@@ -55,7 +55,7 @@ make_maps <- function(island_name){
                         geom_sf(data = wetlands_geo2,
                                 fill = "#012F47",
                                 color = "#012F47")
-                saveRDS(basemap, paste0(here::here("figures"), "/", island_name, "_land_100m_basemap.rds"))
+                saveRDS(basemap, paste0(here::here("figures/rds"), "/", island_name, "_land_100m_basemap.rds"))
                 
                 ## make the 100m moisture basemap
                 moisture_basemap <- make_moisture_map(moisture_geo = moisture_geo,
@@ -65,7 +65,7 @@ make_maps <- function(island_name){
                         geom_sf(data = wetlands_geo2,
                                 fill = "#012F47",
                                 color = "#012F47")
-                saveRDS(moisture_basemap, paste0(here::here("figures"), "/", island_name, "_moisture_100m_basemap.rds"))
+                saveRDS(moisture_basemap, paste0(here::here("figures/rds"), "/", island_name, "_moisture_100m_basemap.rds"))
                 
                 ## make the 100m solar radiation basemap
                 solrad_basemap <- make_solrad_map(solrad_geo = solrad_geo,
@@ -75,17 +75,17 @@ make_maps <- function(island_name){
                         geom_sf(data = wetlands_geo2,
                                 fill = "#012F47",
                                 color = "#012F47")
-                saveRDS(solrad_basemap, paste0(here::here("figures"), "/", island_name, "_solrad_100m_basemap.rds"))
+                saveRDS(solrad_basemap, paste0(here::here("figures/rds"), "/", island_name, "_solrad_100m_basemap.rds"))
                 
                 ## make the 100m agriculture basemap
-                agriculture_basemap <- make_solrad_map(agriculture_geo = agriculture_geo,
+                agriculture_basemap <- make_agriculture_map(agriculture_geo = agriculture_geo,
                                                   wetlands_geo = wetlands_geo,
                                                   relief = relief_100m,
                                                   subtitle = island_name_upperCase) +
                         geom_sf(data = wetlands_geo2,
                                 fill = "#012F47",
                                 color = "#012F47")
-                saveRDS(agriculture_basemap, paste0(here::here("figures"), "/", island_name, "_agriculture_100m_basemap.rds"))
+                saveRDS(agriculture_basemap, paste0(here::here("figures/rds"), "/", island_name, "_agriculture_100m_basemap.rds"))
                 
                 ## make the 200m island basemap
                 basemap <- make_island_map(coast_geo = coast_geo,
@@ -93,7 +93,7 @@ make_maps <- function(island_name){
                                            relief = relief_200m,
                                            subtitle = island_name_upperCase)
                 
-                saveRDS(basemap, paste0(here::here("figures"), "/", island_name, "_land_200m_basemap.rds"))
+                saveRDS(basemap, paste0(here::here("figures/rds"), "/", island_name, "_land_200m_basemap.rds"))
                 
                 ## make the 200m moisture zones basemap
                 moisture_basemap <- make_moisture_map(moisture_geo = moisture_geo,
@@ -103,27 +103,29 @@ make_maps <- function(island_name){
                         geom_sf(data = wetlands_geo2,
                                 fill = "#012F47",
                                 color = "#012F47")
-                saveRDS(moisture_basemap, paste0(here::here("figures"), "/", island_name, "_moisture_200m_basemap.rds"))
+                
+                saveRDS(moisture_basemap, paste0(here::here("figures/rds"), "/", island_name, "_moisture_200m_basemap.rds"))
                 
                 ## make the 200m solar radiation basemap
                 solrad_basemap <- make_solrad_map(solrad_geo = solrad_geo,
                                                   wetlands_geo = wetlands_geo,
                                                   relief = relief_200m,
-                                                  subtitle = island_name_upperCase) +
+                                                  subtitle = NULL) +
                         geom_sf(data = wetlands_geo2,
                                 fill = "#012F47",
                                 color = "#012F47")
-                saveRDS(solrad_basemap, paste0(here::here("figures"), "/", island_name,  "_solrad_200m_basemap.rds"))
+                
+                saveRDS(solrad_basemap, paste0(here::here("figures/rds"), "/", island_name,  "_solrad_200m_basemap.rds"))
                 
                 ## make the 200m agriculture basemap
-                agriculture_basemap <- make_solrad_map(agriculture_geo = agriculture_geo,
+                agriculture_basemap <- make_agriculture_map(agriculture_geo = agriculture_geo,
                                                        wetlands_geo = wetlands_geo,
                                                        relief = relief_200m,
-                                                       subtitle = island_name_upperCase) +
+                                                       subtitle = NULL) +
                         geom_sf(data = wetlands_geo2,
                                 fill = "#012F47",
                                 color = "#012F47")
-                saveRDS(agriculture_basemap, paste0(here::here("figures"), "/", island_name, "_agriculture_200m_basemap.rds"))
+                saveRDS(agriculture_basemap, paste0(here::here("figures/rds"), "/", island_name, "_agriculture_200m_basemap.rds"))
                 
         } else if(island_name == "maui"){
                 wetlands_df2 <- df %>% dplyr::filter(geo == "wetlands_geo2")
@@ -137,14 +139,14 @@ make_maps <- function(island_name){
                         geom_sf(data = wetlands_geo2,
                                 fill = "#012F47",
                                 color = "#012F47")
-                saveRDS(basemap, paste0(here::here("figures"), "/", island_name, "_land_100m_basemap.rds"))
+                saveRDS(basemap, paste0(here::here("figures/rds"), "/", island_name, "_land_100m_basemap.rds"))
                 
                 ## make the 100m moisture basemap
                 moisture_basemap <- make_moisture_map(moisture_geo = moisture_geo,
                                                       wetlands_geo = wetlands_geo,
                                                       relief = relief_100m,
                                                       subtitle = island_name_upperCase)
-                saveRDS(moisture_basemap, paste0(here::here("figures"), "/", island_name, "_moisture_100m_basemap.rds"))
+                saveRDS(moisture_basemap, paste0(here::here("figures/rds"), "/", island_name, "_moisture_100m_basemap.rds"))
                 
                 ## make the 100m solar radiation basemap
                 solrad_basemap <- make_solrad_map(solrad_geo = solrad_geo,
@@ -154,17 +156,17 @@ make_maps <- function(island_name){
                         geom_sf(data = wetlands_geo2,
                                 fill = "#012F47",
                                 color = "#012F47")
-                saveRDS(solrad_basemap, paste0(here::here("figures"), "/", island_name, "_solrad_100m_basemap.rds"))
+                saveRDS(solrad_basemap, paste0(here::here("figures/rds"), "/", island_name, "_solrad_100m_basemap.rds"))
                 
                 ## make the 100m agriculture basemap
-                agriculture_basemap <- make_solrad_map(agriculture_geo = agriculture_geo,
+                agriculture_basemap <- make_agriculture_map(agriculture_geo = agriculture_geo,
                                                        wetlands_geo = wetlands_geo,
                                                        relief = relief_100m,
                                                        subtitle = island_name_upperCase) +
                         geom_sf(data = wetlands_geo2,
                                 fill = "#012F47",
                                 color = "#012F47")
-                saveRDS(agriculture_basemap, paste0(here::here("figures"), "/", island_name, "_agriculture_100m_basemap.rds"))
+                saveRDS(agriculture_basemap, paste0(here::here("figures/rds"), "/", island_name, "_agriculture_100m_basemap.rds"))
                 
                 ## make the 200m island basemap
                 basemap <- make_island_map(coast_geo = coast_geo,
@@ -172,7 +174,7 @@ make_maps <- function(island_name){
                                            relief = relief_200m,
                                            subtitle = island_name_upperCase)
                 
-                saveRDS(basemap, paste0(here::here("figures"), "/", island_name, "_land_200m_basemap.rds"))
+                saveRDS(basemap, paste0(here::here("figures/rds"), "/", island_name, "_land_200m_basemap.rds"))
                 
                 ## make the 200m moisture zones basemap
                 moisture_basemap <- make_moisture_map(moisture_geo = moisture_geo,
@@ -182,7 +184,7 @@ make_maps <- function(island_name){
                         geom_sf(data = wetlands_geo2,
                                 fill = "#012F47",
                                 color = "#012F47")
-                saveRDS(moisture_basemap, paste0(here::here("figures"), "/", island_name, "_moisture_200m_basemap.rds"))
+                saveRDS(moisture_basemap, paste0(here::here("figures/rds"), "/", island_name, "_moisture_200m_basemap.rds"))
                 
                 ## make the 200m solar radiation basemap
                 solrad_basemap <- make_solrad_map(solrad_geo = solrad_geo,
@@ -192,17 +194,17 @@ make_maps <- function(island_name){
                         geom_sf(data = wetlands_geo2,
                                 fill = "#012F47",
                                 color = "#012F47")
-                saveRDS(solrad_basemap, paste0(here::here("figures"), "/", island_name,  "_solrad_200m_basemap.rds"))
+                saveRDS(solrad_basemap, paste0(here::here("figures/rds"), "/", island_name,  "_solrad_200m_basemap.rds"))
                 
                 ## make the 200m agriculture basemap
-                agriculture_basemap <- make_solrad_map(agriculture_geo = agriculture_geo,
+                agriculture_basemap <- make_agriculture_map(agriculture_geo = agriculture_geo,
                                                        wetlands_geo = wetlands_geo,
                                                        relief = relief_200m,
                                                        subtitle = island_name_upperCase) +
                         geom_sf(data = wetlands_geo2,
                                 fill = "#012F47",
                                 color = "#012F47")
-                saveRDS(agriculture_basemap, paste0(here::here("figures"), "/", island_name, "_agriculture_200m_basemap.rds"))
+                saveRDS(agriculture_basemap, paste0(here::here("figures/rds"), "/", island_name, "_agriculture_200m_basemap.rds"))
                 
         } else {
                 ## make the 100m island basemap
@@ -210,28 +212,28 @@ make_maps <- function(island_name){
                                            wetlands_geo = wetlands_geo,
                                            relief = relief_100m,
                                            subtitle = island_name_upperCase)
-                saveRDS(basemap, paste0(here::here("figures"), "/", island_name, "_land_100m_basemap.rds"))
+                saveRDS(basemap, paste0(here::here("figures/rds"), "/", island_name, "_land_100m_basemap.rds"))
                 
                 ## make the 100m moisture basemap
                 moisture_basemap <- make_moisture_map(moisture_geo = moisture_geo,
                                                       wetlands_geo = wetlands_geo,
                                                       relief = relief_100m,
                                                       subtitle = island_name_upperCase)
-                saveRDS(moisture_basemap, paste0(here::here("figures"), "/", island_name, "_moisture_100m_basemap.rds"))
+                saveRDS(moisture_basemap, paste0(here::here("figures/rds"), "/", island_name, "_moisture_100m_basemap.rds"))
                 
                 ## make the 100m solar radiation basemap
                 solrad_basemap <- make_solrad_map(solrad_geo = solrad_geo,
                                                   wetlands_geo = wetlands_geo,
                                                   relief = relief_100m,
                                                   subtitle = island_name_upperCase)
-                saveRDS(solrad_basemap, paste0(here::here("figures"), "/", island_name, "_solrad_100m_basemap.rds"))
+                saveRDS(solrad_basemap, paste0(here::here("figures/rds"), "/", island_name, "_solrad_100m_basemap.rds"))
                 
                 ## make the 100m agriculture basemap
-                agriculture_basemap <- make_solrad_map(agriculture_geo = agriculture_geo,
+                agriculture_basemap <- make_agriculture_map(agriculture_geo = agriculture_geo,
                                                        wetlands_geo = wetlands_geo,
                                                        relief = relief_100m,
                                                        subtitle = island_name_upperCase)
-                saveRDS(agriculture_basemap, paste0(here::here("figures"), "/", island_name, "_agriculture_100m_basemap.rds"))
+                saveRDS(agriculture_basemap, paste0(here::here("figures/rds"), "/", island_name, "_agriculture_100m_basemap.rds"))
                 
                 ## make the 200m island basemap
                 basemap <- make_island_map(coast_geo = coast_geo,
@@ -239,28 +241,28 @@ make_maps <- function(island_name){
                                            relief = relief_200m,
                                            subtitle = island_name_upperCase)
                 
-                saveRDS(basemap, paste0(here::here("figures"), "/", island_name, "_land_200m_basemap.rds"))
+                saveRDS(basemap, paste0(here::here("figures/rds"), "/", island_name, "_land_200m_basemap.rds"))
                 
                 ## make the 200m moisture zones basemap
                 moisture_basemap <- make_moisture_map(moisture_geo = moisture_geo,
                                                       wetlands_geo = wetlands_geo,
                                                       relief = relief_200m,
                                                       subtitle = island_name_upperCase)
-                saveRDS(moisture_basemap, paste0(here::here("figures"), "/", island_name, "_moisture_200m_basemap.rds"))
+                saveRDS(moisture_basemap, paste0(here::here("figures/rds"), "/", island_name, "_moisture_200m_basemap.rds"))
                 
                 ## make the 200m solar radiation basemap
                 solrad_basemap <- make_solrad_map(solrad_geo = solrad_geo,
                                                   wetlands_geo = wetlands_geo,
                                                   relief = relief_200m,
                                                   subtitle = island_name_upperCase)
-                saveRDS(solrad_basemap, paste0(here::here("figures"), "/", island_name,  "_solrad_200m_basemap.rds"))
+                saveRDS(solrad_basemap, paste0(here::here("figures/rds"), "/", island_name,  "_solrad_200m_basemap.rds"))
                 
                 ## make the 200m agriculture basemap
-                agriculture_basemap <- make_solrad_map(agriculture_geo = agriculture_geo,
+                agriculture_basemap <- make_agriculture_map(agriculture_geo = agriculture_geo,
                                                        wetlands_geo = wetlands_geo,
                                                        relief = relief_200m,
                                                        subtitle = island_name_upperCase)
-                saveRDS(agriculture_basemap, paste0(here::here("figures"), "/", island_name, "_agriculture_200m_basemap.rds"))
+                saveRDS(agriculture_basemap, paste0(here::here("figures/rds"), "/", island_name, "_agriculture_200m_basemap.rds"))
         }
         
         
