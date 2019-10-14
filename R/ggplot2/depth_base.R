@@ -41,8 +41,7 @@ make_depth_map <- function(ocean_geo = ocean_geo, coast_geo = coast_geo, relief 
       ),
       guide = "legend"
     ) +
-    labs(title = "Ocean Depth Chart",
-         subtitle = subtitle,
+    labs(title = subtitle,
          fill = "Depth (meters)") +
     labs(color = "") +
     guides(fill = guide_legend(override.aes = list(size = 12))) +
