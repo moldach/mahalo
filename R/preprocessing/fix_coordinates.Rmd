@@ -19,7 +19,7 @@ We will also subset the raster reliefs to reduce their size for quicker loading 
 
 ```{r}
 # function to subset raster
-subset_raster <- function(filename = filename, depth = depth){
+subset_raster_100m <- function(filename = filename, depth = depth){
   prefix <- gsub(".tif", "", filename)
 raster_data = raster::raster(paste0(here::here("data/relief"), "/", depth, "/", filename))
 hawaii_relief <- raster_data %>%
@@ -32,26 +32,49 @@ data.table::fwrite(hawaii_relief,
                    paste0(here::here("data/relief"), "/", depth, "/", prefix, ".csv"))
 }
 
+subset_raster_200m <- function(filename = filename, depth = depth){
+  prefix <- gsub(".tif", "", filename)
+raster_data = raster::raster(paste0(here::here("data/relief"), "/", depth, "/", filename))
+hawaii_relief <- raster_data %>%
+        as("SpatialPixelsDataFrame") %>%
+        as.data.frame() %>%
+        dplyr::rename(., value = prefix) %>%
+        dplyr::filter(value != 255)
+hawaii_relief$y = hawaii_relief$y - 1104910
+hawaii_relief$x = hawaii_relief$x - 1100
+data.table::fwrite(hawaii_relief,
+                   paste0(here::here("data/relief"), "/", depth, "/", prefix, ".csv"))
+}
+
+## 100m
 # state of hawaii
-subset_raster(filename = "srgrhii0100a.tif", depth = "100m")
-subset_raster(filename = "srgyhii200a.tif", depth = "200m")
+subset_raster_100m(filename = "srgrhii0100a.tif", depth = "100m")
 # island of hawaii
-subset_raster(filename = "hawaii_100m.tif", depth = "100m")
-subset_raster(filename = "hawaii_200m.tif", depth = "200m")
+subset_raster_100m(filename = "hawaii_100m.tif", depth = "100m")
 # island of maui
-subset_raster(filename = "maui_100m.tif", depth = "100m")
-subset_raster(filename = "maui_200m.tif", depth = "200m")
+subset_raster_100m(filename = "maui_100m.tif", depth = "100m")
 # island of oahu
-subset_raster(filename = "oahu_100m.tif", depth = "100m")
-subset_raster(filename = "oahu_200m.tif", depth = "200m")
+subset_raster_100m(filename = "oahu_100m.tif", depth = "100m")
 # islands of oahu, molokai, & maui
-subset_raster(filename = "oahu_molokai_maui_100m.tif", depth = "100m")
-subset_raster(filename = "oahu_molokai_maui_200m.tif", depth = "200m")
+subset_raster_100m(filename = "oahu_molokai_maui_100m.tif", depth = "100m")
 # island of kauai
-subset_raster(filename = "kauai_100m.tif", depth = "100m")
-subset_raster(filename = "kauai_extended_100m.tif", depth = "100m")
-subset_raster(filename = "kauai_200m.tif", depth = "200m")
-subset_raster(filename = "kauai_extended_200m.tif", depth = "200m")
+subset_raster_100m(filename = "kauai_100m.tif", depth = "100m")
+subset_raster_100m(filename = "kauai_extended_100m.tif", depth = "100m")
+
+## 200m
+# state of hawaii
+subset_raster_200m(filename = "srgyhii200a.tif", depth = "200m")
+# island of hawaii
+subset_raster_200m(filename = "hawaii_200m.tif", depth = "200m")
+# island of maui
+subset_raster_200m(filename = "maui_200m.tif", depth = "200m")
+# island of oahu
+subset_raster_200m(filename = "oahu_200m.tif", depth = "200m")
+# islands of oahu, molokai, & maui
+subset_raster_200m(filename = "oahu_molokai_maui_200m.tif", depth = "200m")
+# island of kauai
+subset_raster_200m(filename = "kauai_200m.tif", depth = "200m")
+subset_raster_200m(filename = "kauai_extended_200m.tif", depth = "200m")
 ```
 
 ## Correct shapefiles 
