@@ -127,7 +127,7 @@ basemap <- ggplot(data = ocean_geo) +
                         legend.position="bottom",
                         plot.title = element_text(family = "Hanalei", color = "#5e644f", size = 130, hjust = 0.48, vjust = -2))
 
-ggsave(here::here("figures/png/state_ocean_depth_200m.png"), width = 210, height = 297, units = "mm", dev = agg_png())
+ggsave(here::here("figures/png/state_ocean_depth_200m.png"), width = 210, height = 297, units = "mm", dev = ragg::agg_png())
 
 ```
 
