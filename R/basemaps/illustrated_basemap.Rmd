@@ -44,29 +44,9 @@ https://gis.stackexchange.com/questions/144535/creating-transparent-hillshade
 
 ```{r}
 # load the rest of the shapefiles
-coast_data <- read_sf(here::here("data/shapefiles/coastline/Coastline.shp"))
+coast_data <- read_sf(here::here("data/shapefiles/corrected_projections/Coastline.shp"))
 
-# Load the 200m raster data
-raster_data <- raster(here::here("data/relief/100m/srgyhii200a.tif"))
-
-hawaii_relief <- raster_data %>%
-  as("SpatialPixelsDataFrame") %>%
-  as.data.frame() %>%
-  rename(., value = "srgyhii200a") %>%
-  filter(value != 255)
-
-#### YOU NEED TO CORRECT GGIMAGE LOCATIONS... BIG PAIN IN THE BUTT
-# # Load the 200m raster data
-# raster_data <- raster(here::here("data/relief/200m/srgyhii200a.tif"))
-#
-# hawaii_relief <- raster_data %>%
-#   as("SpatialPixelsDataFrame") %>%
-#   as.data.frame() %>%
-#   rename(., value = "srgyhii200a") %>%
-#   filter(value != 255)
-
-coast_geo <- coast_data %>%
-  st_transform(raster_projection)
+relief <- data.table::fread(here::here("data/relief/200m/", "srgyhii200a.csv"))
 ```
 
 # tiki mask
@@ -105,7 +85,7 @@ four <- vector_images %>% filter(image_size == 0.04)
 
 vanilla_ocean <- ggplot(data = coast_geo) +
   geom_raster(
-    data = hawaii_relief,
+    data = relief,
     inherit.aes = FALSE,
     aes(
       x = x,
@@ -125,9 +105,11 @@ vanilla_ocean <- ggplot(data = coast_geo) +
     color = "transparent",
     alpha = 0.2
   ) +
-  labs(title = "Welcome to Hawaii \n Aloha State")
+  labs(title = "Hawaiian Islands") +
+  theme_ocean()
+  
 # save
-saveRDS(vanilla_ocean, here::here("figures", "vanilla_ocean_100m_basemap.rds"))
+saveRDS(vanilla_ocean, here::here("figures/rds", "vanilla_ocean_200m_basemap.rds"))
 
 illustrated_ocean <- vanilla_ocean +
   geom_image(
@@ -193,7 +175,7 @@ ragg::agg_png(
 # plot
 ggplot(data = coast_geo) +
   geom_raster(
-    data = hawaii_relief,
+    data = relief,
     inherit.aes = FALSE,
     aes(
       x = x,
@@ -270,7 +252,7 @@ ragg::agg_png(file,
 # plot
 ggplot(data = coast_geo) +
   geom_raster(
-    data = hawaii_relief,
+    data = relief,
     inherit.aes = FALSE,
     aes(
       x = x,
