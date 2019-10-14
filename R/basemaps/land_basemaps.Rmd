@@ -1,0 +1,56 @@
+---
+title: "Making Land Maps"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=FALSE,
+	             cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               widgetframe_widgetsdir = 'widgets')
+opts_knit$set(width=75)
+```
+
+# Load Environment and Helper Functions
+
+```{r}
+library(sf)
+library(raster)
+library(dplyr)
+library(ggplot2)
+library(showtext)
+
+# Add custom fonts
+font_add_google("Hanalei", "Hanalei")
+font_add_google("Hanalei Fill", "Hanalei Fill")
+# automatically use showtext to render text
+showtext_auto()
+# source theme
+source(here::here("R/themes/", "road_theme.R"))
+# source ggplot2 code for basemaps
+source(here::here("R/ggplot2", "vanilla_base.R"))
+source(here::here("R/ggplot2", "depth_base.R"))
+source(here::here("R/ggplot2", "moisture_base.R"))
+source(here::here("R/ggplot2", "solrad_base.R"))
+source(here::here("R/ggplot2", "agriculture_base.R"))
+
+source(here::here("R/ggplot2", "make_maps.R"))
+```
+
+# Make base maps for all of the islands
+
+You should probably take out the `else/if` from the `make_maps()` and just load the `.rds` add another layer and re-save below...
+
+```{r}
+make_maps("hawaii")
+make_maps("maui")
+make_maps("oahu")
+make_maps("kauai")
+```
