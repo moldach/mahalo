@@ -19,22 +19,23 @@ make_agriculture_map <- function(wetlands_geo = wetlands_geo, agriculture_geo = 
                         fill = "#012F47",
                         color = "#012F47"
                 ) +
-                geom_sf(data = agriculture_geo, aes(fill = AGTYPE), color = "white", alpha = 0.3) +
-                scale_fill_manual(values = AGTYPE) +
+                geom_sf(data = agriculture_geo, aes(fill = Maj_LC), color = "transparent", alpha = 0.7) +
+                scale_fill_manual(values = agriculture_colors) +
                 labs(
-                        title = paste0("Agricultural Lands of Importance \n", subtitle),
+                        title = paste0("Land Cover \n", subtitle),
                         fill = ""
                 ) +
                 theme_roads()
 }
 
 agriculture_colors <- c(
-        "Forest" = "#ffffcc",
-        "Shrubland" = "#ffeda0",
-        "Grassland" = "#fed976",
-        "Agriculture" = "#feb24c",
-        "Developed" = "#fd8d3c",
-        "Not Vegetated" = "#fc4e2a"
+        "Forest" = "#182c25",
+        "Shrubland" = "#467030",
+        "Grassland" = "#D6C55A",
+        "Agriculture" = "#837590",
+        "Developed" = "#d1495b",
+        "Not Vegetated" = "#2e4057",
+        "Other" = "grey69"
         )
 
 agriculture_vec <- c(
@@ -43,5 +44,5 @@ agriculture_vec <- c(
         "Grassland",
         "Agriculture",
         "Developed",
-        "Not Vegetated"
-                 )
+        "Not Vegetated",
+        "Other")
