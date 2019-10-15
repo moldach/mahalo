@@ -1,5 +1,5 @@
 make_island_map <- function(coast_geo = coast_geo, wetlands_geo = wetlands_geo, relief = relief, subtitle = subtitle) {
-  basemap <- ggplot(data = coast_geo) +
+  basemap <- ggplot() +
     # first: draw the relief
     geom_raster(
       data = relief,

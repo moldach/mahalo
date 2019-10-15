@@ -1,5 +1,5 @@
 make_depth_map <- function(ocean_geo = ocean_geo, coast_geo = coast_geo, relief = relief, subtitle = subtitle) {
-  state_base <- ggplot(data = ocean_geo) +
+  state_base <- ggplot() +
     # first: draw the relief
     geom_raster(
       data = relief,
