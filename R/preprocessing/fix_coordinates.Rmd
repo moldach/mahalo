@@ -22,11 +22,13 @@ We will also subset the raster reliefs to reduce their size for quicker loading 
 subset_raster_100m <- function(filename = filename, depth = depth){
   prefix <- gsub(".tif", "", filename)
 raster_data = raster::raster(paste0(here::here("data/relief"), "/", depth, "/", filename))
+# subset the raster size
+raster_data %>% raster::aggregate() -> raster_data
 hawaii_relief <- raster_data %>%
         as("SpatialPixelsDataFrame") %>%
         as.data.frame() %>%
         dplyr::rename(., value = prefix) %>%
-        dplyr::filter(value != 255)
+        dplyr::filter(value != 255) # subset further
 hawaii_relief$y = hawaii_relief$y - 1104600
 data.table::fwrite(hawaii_relief,
                    paste0(here::here("data/relief"), "/", depth, "/", prefix, ".csv"))
@@ -81,6 +83,8 @@ subset_raster_200m(filename = "kauai_extended_200m.tif", depth = "200m")
 
 ```{r}
 raster_data = raster::raster(here::here("data/relief/100m", "srgrhii0100a.tif"))
+# reduce the size of raster
+raster_data %>% raster::aggregate() -> raster_data
 hawaii_relief <- raster_data %>%
         as("SpatialPixelsDataFrame") %>%
         as.data.frame() %>%
