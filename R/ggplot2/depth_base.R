@@ -5,7 +5,7 @@ make_depth_map <- function(ocean_geo = ocean_geo, coast_geo = coast_geo, subtitl
       range = c(0.4, 0.01),
       guide = FALSE
     ) +
-    geom_sf(
+    geom_sf(data = ocean_geo,
       mapping = aes(fill = factor(depth)),
       color = "white",
       size = 0.1,
