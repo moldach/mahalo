@@ -40,13 +40,10 @@ source(here::here("R/ggplot2", "depth_base.R"))
 source(here::here("R/ggplot2", "moisture_base.R"))
 source(here::here("R/ggplot2", "solrad_base.R"))
 source(here::here("R/ggplot2", "agriculture_base.R"))
-
 source(here::here("R/ggplot2", "make_land_basemaps.R"))
 ```
 
 # Make base maps for all of the islands
-
-You should probably take out the `else/if` from the `make_maps()` and just load the `.rds` add another layer and re-save below...
 
 ```{r}
 make_maps("hawaii")
