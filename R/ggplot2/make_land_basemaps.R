@@ -196,7 +196,7 @@ make_maps <- function(island_name){
                 ## make the 200m solar radiation basemap
                 solrad_basemap <- make_solrad_map(solrad_geo = solrad_geo,
                                                   wetlands_geo = wetlands_geo,
-                                                  subtitle = NULL) +
+                                                  subtitle = island_name_upperCase) +
                         geom_sf(data = wetlands_geo2,
                                 fill = "#012F47",
                                 color = "#012F47") +
