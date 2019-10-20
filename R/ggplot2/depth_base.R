@@ -1,5 +1,14 @@
-make_depth_map <- function(ocean_geo = ocean_geo, coast_geo = coast_geo, subtitle = subtitle) {
+make_depth_map <- function(ocean_geo = ocean_geo, coast_geo = coast_geo, relief = relief, subtitle = subtitle) {
   state_base <- ggplot() +
+    geom_raster(
+      data = relief,
+      inherit.aes = FALSE,
+      aes(
+        x = x,
+        y = y,
+        alpha = value
+      )
+    ) +
     scale_alpha(
       name = "",
       range = c(0.4, 0.01),

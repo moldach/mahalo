@@ -41,37 +41,14 @@ showtext_auto()
 # State of Hawaii (all Islands)
 
 ```{r}
-# load the subset raster files
 relief_100m <- data.table::fread(here::here("data/relief/100m/", "srgrhii0100a.csv"))
 relief_200m <- data.table::fread(here::here("data/relief/200m/", "srgyhii200a.csv"))
-# load the shapefiles with corrected projections
 coast_geo <- sf::read_sf(here::here("data/shapefiles/corrected_projections", "Coastline.shp"))
 ocean_geo <- sf::read_sf(here::here("data/shapefiles/corrected_projections", "Ocean_Depth.shp"))
-basemap <- make_depth_map(ocean_geo = ocean_geo, coast_geo = coast_geo, subtitle = "Hawaiian Islands")
-saveRDS(basemap, here::here("figures/rds", "state_ocean_depth_basemap_noRelief.rds"))
-## save 100m raster
-basemap_100m <- basemap +
-  geom_raster(
-        data = relief_100m,
-        inherit.aes = FALSE,
-        aes(
-                x = x,
-                y = y,
-                alpha = value
-        )
-)
-saveRDS(basemap_100m, here::here("figures/rds", "state_ocean_depth_100m_basemap.rds"))
-basemap_200m <- basemap +
-  geom_raster(
-        data = relief_200m,
-        inherit.aes = FALSE,
-        aes(
-                x = x,
-                y = y,
-                alpha = value
-        )
-)
-saveRDS(basemap_200m, here::here("figures/rds", "state_ocean_depth_200m_basemap.rds"))
+basemap <- make_depth_map(ocean_geo = ocean_geo, coast_geo = coast_geo, relief = relief_100m, subtitle = "Hawaiian Islands")
+saveRDS(basemap, here::here("figures/rds", "state_ocean_depth_100m_basemap.rds"))
+basemap <- make_depth_map(ocean_geo = ocean_geo, coast_geo = coast_geo, relief = relief_200m,subtitle = "Hawaiian Islands")
+saveRDS(basemap, here::here("figures/rds", "state_ocean_depth_200m_basemap.rds"))
 ```
 
 Save images
@@ -224,31 +201,9 @@ relief_200m <- data.table::fread(here::here("data/relief/200m/", "hawaii_200m.cs
 coast_geo <- sf::read_sf(here::here("data/shapefiles/corrected_projections", "hawaii_coastline.shp"))
 ocean_geo <- sf::read_sf(here::here("data/shapefiles/corrected_projections", "hawaii_depth.shp"))
 ## save hawaii with no relief
-basemap <- make_depth_map(ocean_geo = ocean_geo, coast_geo = coast_geo, subtitle = "Hawaii")
-saveRDS(basemap, here::here("figures/rds", "hawaii_ocean_depth_basemap_noRelief.rds"))
-## save the 100m relief
-basemap_100m <- basemap +
-  geom_raster(
-        data = relief_100m,
-        inherit.aes = FALSE,
-        aes(
-                x = x,
-                y = y,
-                alpha = value
-        )
-)
+basemap <- make_depth_map(ocean_geo = ocean_geo, coast_geo = coast_geo, relief_100m, subtitle = "Hawaii")
 saveRDS(basemap_100m, here::here("figures/rds", "hawaii_ocean_depth_100m_basemap.rds"))
-## save the 200m relief
-basemap <- basemap +
-  geom_raster(
-        data = relief_200m,
-        inherit.aes = FALSE,
-        aes(
-                x = x,
-                y = y,
-                alpha = value
-        )
-)
+basemap <- make_depth_map(ocean_geo = ocean_geo, coast_geo = coast_geo, relief_200m, subtitle = "Hawaii")
 saveRDS(basemap, here::here("figures/rds", "hawaii_ocean_depth_200m_basemap.rds"))
 ```
 
@@ -334,31 +289,9 @@ relief_200m <- data.table::fread(here::here("data/relief/200m/", "kauai_extended
 coast_geo <- sf::read_sf(here::here("data/shapefiles/corrected_projections", "kauai_extended_coastline.shp"))
 ocean_geo <- sf::read_sf(here::here("data/shapefiles/corrected_projections", "kauai_depth.shp"))
 ## save kauai without relief
-basemap <- make_depth_map(ocean_geo = ocean_geo, coast_geo = coast_geo, subtitle = "Kauai")
-saveRDS(basemap, here::here("figures/rds", "kauai_ocean_depth_basemap_noRelief.rds"))
-## save kauai with 100m relief
-basemap_100m <- basemap +
-  geom_raster(
-        data = relief_100m,
-        inherit.aes = FALSE,
-        aes(
-                x = x,
-                y = y,
-                alpha = value
-        )
-)
+basemap <- make_depth_map(ocean_geo = ocean_geo, coast_geo = coast_geo, relief = relief_100m, subtitle = "Kauai")
 saveRDS(basemap_100m, here::here("figures/rds", "kauai_ocean_depth_100m_basemap.rds"))
-## save kauai with 200m relief
-basemap_200m <- basemap +
-  geom_raster(
-        data = relief_200m,
-        inherit.aes = FALSE,
-        aes(
-                x = x,
-                y = y,
-                alpha = value
-        )
-)
+basemap_200m <- make_depth_map(ocean_geo = ocean_geo, coast_geo = coast_geo, relief = relief_200m, subtitle = "Kauai")
 saveRDS(basemap_200m, here::here("figures/rds", "kauai_ocean_depth_200m_basemap.rds"))
 ```
 
@@ -444,31 +377,10 @@ relief_200m <- data.table::fread(here::here("data/relief/200m/", "oahu_molokai_m
 coast_geo <- sf::read_sf(here::here("data/shapefiles/corrected_projections", "oahu_molokai_maui_coastline.shp"))
 ocean_geo <- sf::read_sf(here::here("data/shapefiles/corrected_projections", "oahu_molokai_maui_depth.shp"))
 ## save islands without relief
-basemap <- make_depth_map(ocean_geo = ocean_geo, coast_geo = coast_geo, subtitle = "Oahu, Molokai and Maui")
-saveRDS(basemap, here::here("figures/rds", "oahu_molokai_maui_ocean_depth_basemap_noRelief.rds"))
-basemap_100m <- basemap +
-  geom_raster(
-        data = relief_100m,
-        inherit.aes = FALSE,
-        aes(
-                x = x,
-                y = y,
-                alpha = value
-        )
-)
+basemap <- make_depth_map(ocean_geo = ocean_geo, coast_geo = coast_geo, relief = relief_100m, subtitle = "Oahu, Molokai and Maui")
 saveRDS(basemap, here::here("figures/rds", "oahu_molokai_maui_ocean_depth_100m_basemap.rds"))
-
 # load the 200m subset rasterfile
-basemap_200m <- basemap +
-  geom_raster(
-        data = relief_200m,
-        inherit.aes = FALSE,
-        aes(
-                x = x,
-                y = y,
-                alpha = value
-        )
-)
+basemap <- make_depth_map(ocean_geo = ocean_geo, coast_geo = coast_geo, relief = relief_200m, subtitle = "Oahu, Molokai and Maui")
 saveRDS(basemap, here::here("figures/rds", "oahu_molokai_maui_ocean_depth_200m_basemap.rds"))
 ```
 
