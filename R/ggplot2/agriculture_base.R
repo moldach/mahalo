@@ -1,14 +1,5 @@
-make_agriculture_map <- function(wetlands_geo = wetlands_geo, agriculture_geo = agriculture_geo, relief = relief, subtitle = subtitle) {
+make_agriculture_map <- function(wetlands_geo = wetlands_geo, agriculture_geo = agriculture_geo, subtitle = subtitle) {
         basemap <- ggplot() +
-                geom_raster(
-                        data = relief,
-                        inherit.aes = FALSE,
-                        aes(
-                                x = x,
-                                y = y,
-                                alpha = value
-                        )
-                ) +
                 scale_alpha(
                         name = "",
                         range = c(0.4, 0.01),

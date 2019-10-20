@@ -1,16 +1,5 @@
 make_island_map <- function(coast_geo = coast_geo, wetlands_geo = wetlands_geo, relief = relief, subtitle = subtitle) {
   basemap <- ggplot() +
-    # first: draw the relief
-    geom_raster(
-      data = relief,
-      inherit.aes = FALSE,
-      aes(
-        x = x,
-        y = y,
-        alpha = value
-      )
-    ) +
-    # use the "alpha hack" (as the "fill" aesthetic is already taken)
     scale_alpha(
       name = "",
       range = c(0.4, 0.01),

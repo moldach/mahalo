@@ -1,21 +1,10 @@
-make_depth_map <- function(ocean_geo = ocean_geo, coast_geo = coast_geo, relief = relief, subtitle = subtitle) {
+make_depth_map <- function(ocean_geo = ocean_geo, coast_geo = coast_geo, subtitle = subtitle) {
   state_base <- ggplot() +
-    # first: draw the relief
-    geom_raster(
-      data = relief,
-      inherit.aes = FALSE,
-      aes(
-        x = x,
-        y = y,
-        alpha = value
-      )
-    ) +
-    # use the "alpha hack" (as the "fill" aesthetic is already taken)
     scale_alpha(
       name = "",
       range = c(0.4, 0.01),
       guide = FALSE
-    ) + # suppress legend
+    ) +
     geom_sf(
       mapping = aes(fill = factor(depth)),
       color = "white",
