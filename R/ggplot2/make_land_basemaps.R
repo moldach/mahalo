@@ -138,6 +138,7 @@ make_maps <- function(island_name){
                 ## make the 100m moisture basemap
                 moisture_basemap <- make_moisture_map(moisture_geo = moisture_geo,
                                                       wetlands_geo = wetlands_geo,
+                                                      relief = relief_100m,
                                                       subtitle = island_name_upperCase)
                 saveRDS(moisture_basemap, paste0(here::here("figures/rds"), "/", island_name, "_moisture_100m_basemap.rds"))
                 
