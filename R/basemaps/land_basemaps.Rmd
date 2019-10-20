@@ -41,7 +41,7 @@ source(here::here("R/ggplot2", "moisture_base.R"))
 source(here::here("R/ggplot2", "solrad_base.R"))
 source(here::here("R/ggplot2", "agriculture_base.R"))
 
-source(here::here("R/ggplot2", "make_maps.R"))
+source(here::here("R/ggplot2", "make_land_basemaps.R"))
 ```
 
 # Make base maps for all of the islands
