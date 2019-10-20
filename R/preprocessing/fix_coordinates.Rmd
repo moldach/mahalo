@@ -37,6 +37,8 @@ data.table::fwrite(hawaii_relief,
 subset_raster_200m <- function(filename = filename, depth = depth){
   prefix <- gsub(".tif", "", filename)
 raster_data = raster::raster(paste0(here::here("data/relief"), "/", depth, "/", filename))
+# subset the raster size
+raster_data %>% raster::aggregate() -> raster_data
 hawaii_relief <- raster_data %>%
         as("SpatialPixelsDataFrame") %>%
         as.data.frame() %>%
