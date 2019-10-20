@@ -234,7 +234,7 @@ make_maps <- function(island_name){
                 ## make the island basemap with no relief
                 basemap <- make_island_map(coast_geo = coast_geo,
                                            wetlands_geo = wetlands_geo,
-                                           subtitle = island_name_upperCase) +
+                                           subtitle = island_name_upperCase)
                         
                 
                 saveRDS(basemap, paste0(here::here("figures/rds"), "/", island_name, "_land_basemap_noRelief.rds"))
